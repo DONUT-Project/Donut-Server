@@ -1,0 +1,48 @@
+name: OnlinePlanner_Ci_CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  CI-CD:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build --info
+        
+      - name: Build Docker Image
+        run: docker build -t seogunhee4/op_server:latest .
+        
+      - name: Publish To Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: seogunhee4/donut:tagname
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_IP }}
+          username: ${{ secrets.REMOTE_SSH_ID }}
+          password:  ${{ secrets.REMOTE_SSH_KEY }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
+          script: |
+            cd Donut-Server/
+            git fetch --all
+            git reset --hard origin/main
+            git pull origin main
+            gradle build
+            docker rm -f donut_server
+            docker build --tag donut_server .
+            docker run -it --env-file /home/ubuntu/.env -d -p 7788:7788 --name donut_server donut_server
