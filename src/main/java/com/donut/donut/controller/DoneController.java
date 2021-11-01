@@ -1,5 +1,6 @@
 package com.donut.donut.controller;
 
+import com.donut.donut.payload.request.SearchDoneRequest;
 import com.donut.donut.payload.request.UpdateDoneRequest;
 import com.donut.donut.payload.request.WriteDoneRequest;
 import com.donut.donut.payload.response.DoneResponse;
@@ -25,6 +26,12 @@ public class DoneController {
     public List<DoneResponse> getFriendDone(@RequestHeader("Authorization") String token,
                                             @PathVariable Long friendId) {
         return doneService.readFriendDone(token, friendId);
+    }
+
+    @GetMapping("/search")
+    public List<DoneResponse> searchWriteAt(@RequestHeader("Authorization") String token,
+                                            @RequestBody SearchDoneRequest searchDoneRequest) {
+        return doneService.searchDoneByWriteAt(token, searchDoneRequest.getWriteAt());
     }
 
     @PostMapping

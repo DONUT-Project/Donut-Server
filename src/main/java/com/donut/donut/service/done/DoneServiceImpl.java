@@ -67,6 +67,16 @@ public class DoneServiceImpl implements DoneService {
     }
 
     @Override
+    public List<DoneResponse> searchDoneByWriteAt(String token, LocalDateTime writeAt) {
+        User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
+                .orElseThrow(UserNotFoundException::new);
+
+        List<Done> dones = doneRepository.findAllByUserAndWriteAt(user, writeAt);
+
+        return setResponse(dones);
+    }
+
+    @Override
     public List<DoneResponse> readFriendDone(String token, Long friendId) {
         User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
                 .orElseThrow(UserNotFoundException::new);
