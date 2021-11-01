@@ -58,7 +58,7 @@ public class JwtProvider {
     }
 
     public Long getKakaoId(String token) {
-        return Long.getLong(Jwts.parser().setSigningKey(secretKey)
+        return Long.parseLong(Jwts.parser().setSigningKey(secretKey)
                 .parseClaimsJws(token).getBody().getSubject());
     }
 }
