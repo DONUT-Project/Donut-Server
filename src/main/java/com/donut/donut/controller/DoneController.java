@@ -8,6 +8,7 @@ import com.donut.donut.service.done.DoneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -30,8 +31,8 @@ public class DoneController {
 
     @GetMapping("/search")
     public List<DoneResponse> searchWriteAt(@RequestHeader("Authorization") String token,
-                                            @RequestBody SearchDoneRequest searchDoneRequest) {
-        return doneService.searchDoneByWriteAt(token, searchDoneRequest.getWriteAt());
+                                            @RequestParam LocalDateTime writeAt) {
+        return doneService.searchDoneByWriteAt(token, writeAt);
     }
 
     @PostMapping
