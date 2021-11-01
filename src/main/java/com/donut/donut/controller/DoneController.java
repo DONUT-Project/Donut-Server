@@ -6,6 +6,7 @@ import com.donut.donut.payload.request.WriteDoneRequest;
 import com.donut.donut.payload.response.DoneResponse;
 import com.donut.donut.service.done.DoneService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -31,7 +32,8 @@ public class DoneController {
 
     @GetMapping("/search")
     public List<DoneResponse> searchWriteAt(@RequestHeader("Authorization") String token,
-                                            @RequestParam LocalDateTime writeAt) {
+                                            @RequestParam 
+                                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime writeAt) {
         return doneService.searchDoneByWriteAt(token, writeAt);
     }
 
