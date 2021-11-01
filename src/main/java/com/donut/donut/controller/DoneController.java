@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,8 +33,7 @@ public class DoneController {
 
     @GetMapping("/search")
     public List<DoneResponse> searchWriteAt(@RequestHeader("Authorization") String token,
-                                            @RequestParam 
-                                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime writeAt) {
+                                            @RequestParam LocalDate writeAt) {
         return doneService.searchDoneByWriteAt(token, writeAt);
     }
 

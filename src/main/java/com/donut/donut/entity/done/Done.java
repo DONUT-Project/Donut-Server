@@ -4,6 +4,7 @@ import com.donut.donut.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -27,5 +28,5 @@ public class Done {
 
     private Boolean isPublic;
 
-    private LocalDateTime writeAt;
+    private LocalDate writeAt;
 }

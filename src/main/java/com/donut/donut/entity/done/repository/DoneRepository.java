@@ -5,6 +5,7 @@ import com.donut.donut.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface DoneRepository extends JpaRepository<Done, Long> {
     List<Done> findAllByUser(User user);
-    List<Done> findAllByUserAndWriteAt(User user, LocalDateTime writeAt);
+    List<Done> findAllByUserAndWriteAt(User user, LocalDate writeAt);
     Optional<Done> findByDoneIdAndUser(Long doneId, User user);
     void deleteByDoneId(Long doneId);
     Optional<Done> findByDoneId(Long doneId);

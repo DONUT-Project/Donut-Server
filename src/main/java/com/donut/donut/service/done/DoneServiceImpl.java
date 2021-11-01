@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,7 @@ public class DoneServiceImpl implements DoneService {
     }
 
     @Override
-    public List<DoneResponse> searchDoneByWriteAt(String token, LocalDateTime writeAt) {
+    public List<DoneResponse> searchDoneByWriteAt(String token, LocalDate writeAt) {
         User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
                 .orElseThrow(UserNotFoundException::new);
 
@@ -101,7 +102,7 @@ public class DoneServiceImpl implements DoneService {
                         .user(user)
                         .title(writeDoneRequest.getTitle().equals("") ? "" : writeDoneRequest.getTitle())
                         .isPublic(writeDoneRequest.getIsPublic())
-                        .writeAt(LocalDateTime.now())
+                        .writeAt(LocalDate.now())
                         .build()
         );
     }
