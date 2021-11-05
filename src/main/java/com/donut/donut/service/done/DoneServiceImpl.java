@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -49,6 +50,7 @@ public class DoneServiceImpl implements DoneService {
                             .userName(done.getUser().getNickName())
                             .title(done.getTitle())
                             .content(done.getContent())
+                            .writeAt(LocalDate.now(ZoneId.of("Asia/Seoul")))
                             .isPublic(done.getIsPublic())
                             .build()
             );
