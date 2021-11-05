@@ -50,7 +50,7 @@ public class DoneServiceImpl implements DoneService {
                             .userName(done.getUser().getNickName())
                             .title(done.getTitle())
                             .content(done.getContent())
-                            .writeAt(LocalDate.now(ZoneId.of("Asia/Seoul")))
+                            .writeAt(done.getWriteAt())
                             .isPublic(done.getIsPublic())
                             .build()
             );
@@ -104,7 +104,7 @@ public class DoneServiceImpl implements DoneService {
                         .user(user)
                         .title(writeDoneRequest.getTitle().equals("") ? "" : writeDoneRequest.getTitle())
                         .isPublic(writeDoneRequest.getIsPublic())
-                        .writeAt(LocalDate.now())
+                        .writeAt(LocalDate.now(ZoneId.of("Asia/Seoul")))
                         .build()
         );
     }
