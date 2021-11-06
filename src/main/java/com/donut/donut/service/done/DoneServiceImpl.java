@@ -35,7 +35,7 @@ public class DoneServiceImpl implements DoneService {
     private final JwtProvider jwtProvider;
 
     private <T>void setIfNotNull(Consumer<T> setter, T value) {
-        if(value.equals(""))
+        if(!value.equals(""))
             setter.accept(value);
     }
 
