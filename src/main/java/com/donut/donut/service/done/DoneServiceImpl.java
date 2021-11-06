@@ -124,6 +124,19 @@ public class DoneServiceImpl implements DoneService {
     }
 
     @Override
+    public void updatePublic(String token,Long doneId, Boolean isPublic) {
+        User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
+                .orElseThrow(UserNotFoundException::new);
+
+        Done done = doneRepository.findByDoneIdAndUser(doneId, user)
+                .orElseThrow(DoneNotFoundException::new);
+
+        done.setIsPublic(isPublic);
+
+        doneRepository.save(done);
+    }
+
+    @Override
     @Transactional
     public void deleteDone(String token, Long doneId) {
         User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))

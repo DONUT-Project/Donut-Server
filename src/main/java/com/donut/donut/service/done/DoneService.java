@@ -14,5 +14,6 @@ public interface DoneService {
     List<DoneResponse> readFriendDone(String token, Long friendId);
     void writeDone(String token, WriteDoneRequest writeDoneRequest);
     void updateDone(String token, Long doneId, UpdateDoneRequest updateDoneRequest);
+    void updatePublic(String token, Long doneId, Boolean isPublic);
     void deleteDone(String token, Long doneId);
 }

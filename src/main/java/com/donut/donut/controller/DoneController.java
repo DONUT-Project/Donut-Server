@@ -48,6 +48,13 @@ public class DoneController {
         doneService.updateDone(token, doneId, updateDoneRequest);
     }
 
+    @PutMapping("/public/{doneId}")
+    public void updatePublic(@RequestHeader("Authorization") String token,
+                             @PathVariable Long doneId,
+                             @RequestParam Boolean isPublic) {
+        doneService.updatePublic(token, doneId, isPublic);
+    }
+
     @DeleteMapping("/{doneId}")
     public void deleteDone(@RequestHeader("Authorization") String token,
                            @PathVariable Long doneId) {
