@@ -45,4 +45,13 @@ public class UserServiceImpl implements UserService{
                 .profileUrl(user.getUserImageUrl())
                 .build();
     }
+
+    @Override
+    @Transactional
+    public void deleteUser(String token) {
+        User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
+                .orElseThrow(UserNotFoundException::new);
+
+        userRepository.deleteByKakaoId(user.getKakaoId());
+    }
 }

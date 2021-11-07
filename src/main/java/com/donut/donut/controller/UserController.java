@@ -22,4 +22,9 @@ public class UserController {
     public void signUp(@RequestBody SignUpRequest signUpRequest) {
         userService.signUp(signUpRequest);
     }
+
+    @DeleteMapping
+    public void deleteUser(@RequestHeader("Authorization") String token) {
+        userService.deleteUser(token);
+    }
 }

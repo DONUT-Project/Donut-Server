@@ -6,4 +6,5 @@ import com.donut.donut.payload.response.UserResponse;
 public interface UserService {
     void signUp(SignUpRequest signUpRequest);
     UserResponse getMyInfo(String token);
+    void deleteUser(String token);
 }
