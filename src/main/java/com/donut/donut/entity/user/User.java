@@ -1,7 +1,6 @@
 package com.donut.donut.entity.user;
 
 import com.donut.donut.entity.comment.Comment;
-import com.donut.donut.entity.device_token.DeviceToken;
 import com.donut.donut.entity.done.Done;
 import com.donut.donut.entity.recomment.Recomment;
 import lombok.AllArgsConstructor;
