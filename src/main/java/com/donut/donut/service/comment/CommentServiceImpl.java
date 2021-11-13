@@ -2,6 +2,7 @@ package com.donut.donut.service.comment;
 
 import com.donut.donut.entity.comment.Comment;
 import com.donut.donut.entity.comment.repository.CommentRepository;
+import com.donut.donut.entity.device_token.DeviceToken;
 import com.donut.donut.entity.done.Done;
 import com.donut.donut.entity.done.repository.DoneRepository;
 import com.donut.donut.entity.friend.repository.FriendRepository;
@@ -14,6 +15,7 @@ import com.donut.donut.payload.request.UpdateCommentRequest;
 import com.donut.donut.payload.request.WriteCommentRequest;
 import com.donut.donut.payload.response.CommentResponse;
 import com.donut.donut.payload.response.ReCommentResponse;
+import com.donut.donut.util.FcmUtil;
 import com.donut.donut.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,7 @@ public class CommentServiceImpl implements CommentService {
     private final RecommentRepository recommentRepository;
 
     private final JwtProvider jwtProvider;
+    private final FcmUtil fcmUtil;
 
     private <T>void setIfNotNull(Consumer<T> setter, T value) {
         if(value != null)
@@ -123,7 +126,7 @@ public class CommentServiceImpl implements CommentService {
         friendRepository.findByFriend_KakaoIdAndMe(done.getUser().getKakaoId(), user)
                 .orElseThrow(FriendNotFoundException::new);
 
-        commentRepository.save(
+        Comment comment = commentRepository.save(
                 Comment.builder()
                         .comment(writeCommentRequest.getComment())
                         .user(user)
@@ -132,6 +135,17 @@ public class CommentServiceImpl implements CommentService {
                         .isPublic(writeCommentRequest.getIsPublic())
                         .build()
         );
+
+        User doner = userRepository.findByKakaoId(comment.getDone().getUser().getKakaoId())
+                .orElseThrow(UserNotFoundException::new);
+
+        List<String> tokens = new ArrayList<>();
+
+        for(DeviceToken deviceToken : doner.getDeviceTokens()) {
+            tokens.add(deviceToken.getDeviceToken());
+        }
+
+        fcmUtil.sendPushMessage(tokens, "댓글알림!", "Done리스트에 댓글이 왔습니다.");
     }
 
     @Override
@@ -154,6 +168,23 @@ public class CommentServiceImpl implements CommentService {
                         .user(user)
                         .build()
         );
+
+        User commenter = userRepository.findByKakaoId(comment.getUser().getKakaoId())
+                .orElseThrow(UserNotFoundException::new);
+
+        User doner = userRepository.findByKakaoId(comment.getDone().getUser().getKakaoId())
+                .orElseThrow(UserNotFoundException::new);
+
+        List<String> tokens = new ArrayList<>();
+        for(DeviceToken deviceToken : commenter.getDeviceTokens()) {
+            tokens.add(deviceToken.getDeviceToken());
+        }
+
+        for(DeviceToken deviceToken : doner.getDeviceTokens()) {
+            tokens.add(deviceToken.getDeviceToken());
+        }
+
+        fcmUtil.sendPushMessage(tokens, "댓글알림!", "Done리스트에 댓글이 왔습니다.");
     }
 
     @Override

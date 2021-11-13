@@ -1,16 +1,21 @@
 package com.donut.donut.service.auth;
 
+import com.donut.donut.entity.device_token.DeviceToken;
+import com.donut.donut.entity.device_token.repository.DeviceTokenRepository;
 import com.donut.donut.entity.refresh_token.RefreshToken;
 import com.donut.donut.entity.refresh_token.repository.RefreshTokenRepository;
+import com.donut.donut.entity.user.User;
 import com.donut.donut.entity.user.repository.UserRepository;
 import com.donut.donut.error.exceptions.InvalidTokenException;
 import com.donut.donut.error.exceptions.LoginFailedException;
 import com.donut.donut.error.exceptions.RefreshTokenException;
+import com.donut.donut.error.exceptions.UserNotFoundException;
 import com.donut.donut.payload.request.SignInRequest;
 import com.donut.donut.payload.response.TokenResponse;
 import com.donut.donut.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ public class AuthServiceImpl implements AuthService{
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final DeviceTokenRepository deviceTokenRepository;
 
     private final JwtProvider jwtProvider;
 
@@ -40,6 +46,15 @@ public class AuthServiceImpl implements AuthService{
                                     .refreshToken(refreshToken)
                                     .build()
                     );
+
+                    if(!deviceTokenRepository.existsByDeviceToken(signInRequest.getDeviceToken())) {
+                        deviceTokenRepository.save(
+                                DeviceToken.builder()
+                                        .deviceToken(signInRequest.getDeviceToken())
+                                        .user(user)
+                                        .build()
+                        );
+                    }
 
                     return TokenResponse.builder()
                             .accessToken(accessToken)
@@ -67,5 +82,15 @@ public class AuthServiceImpl implements AuthService{
                             .build();
                 })
                 .orElseThrow(RefreshTokenException::new);
+    }
+
+    @Override
+    @Transactional
+    public void logout(String token, String deviceToken) {
+        User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
+                .orElseThrow(UserNotFoundException::new);
+
+        if(deviceTokenRepository.existsByDeviceTokenAndUser(deviceToken, user))
+            deviceTokenRepository.deleteByDeviceTokenAndUser(deviceToken, user);
     }
 }

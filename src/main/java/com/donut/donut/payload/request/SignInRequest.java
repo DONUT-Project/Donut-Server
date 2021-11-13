@@ -7,4 +7,5 @@ public class SignInRequest {
     private Long kakaoId;
     private String nickName;
     private String profileUrl;
+    private String deviceToken;
 }

@@ -22,4 +22,10 @@ public class AuthController {
     public TokenResponse refreshToken(@RequestHeader("X-Refresh-Token") String refreshToken) {
         return authService.refreshToken(refreshToken);
     }
+
+    @DeleteMapping("/{deviceToken}")
+    public void logout(@PathVariable String deviceToken,
+                       @RequestHeader("Authorization") String token) {
+        authService.logout(token, deviceToken);
+    }
 }

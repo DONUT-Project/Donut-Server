@@ -1,5 +1,6 @@
 package com.donut.donut.service.friend;
 
+import com.donut.donut.entity.device_token.DeviceToken;
 import com.donut.donut.entity.friend.Friend;
 import com.donut.donut.entity.friend.repository.FriendRepository;
 import com.donut.donut.entity.user.User;
@@ -8,6 +9,7 @@ import com.donut.donut.error.exceptions.AlreadyFriendException;
 import com.donut.donut.error.exceptions.FriendNotFoundException;
 import com.donut.donut.error.exceptions.UserNotFoundException;
 import com.donut.donut.payload.response.UserResponse;
+import com.donut.donut.util.FcmUtil;
 import com.donut.donut.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class FriendServiceImpl implements FriendService{
     private final FriendRepository friendRepository;
 
     private final JwtProvider jwtProvider;
+    private final FcmUtil fcmUtil;
 
     @Override
     @Transactional
@@ -46,6 +49,20 @@ public class FriendServiceImpl implements FriendService{
                         .friend(friend)
                         .build()
         );
+
+        friendRepository.save(
+                Friend.builder()
+                        .friend(user)
+                        .me(friend)
+                        .build()
+        );
+
+        List<String> tokens = new ArrayList<>();
+        for(DeviceToken deviceToken : friend.getDeviceTokens()) {
+            tokens.add(deviceToken.getDeviceToken());
+        }
+
+        fcmUtil.sendPushMessage(tokens, "친구가 되었습니다", user.getNickName() + "님과 친구가 되었습니다!");
     }
 
     @Override
