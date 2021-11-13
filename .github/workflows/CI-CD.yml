@@ -42,6 +42,7 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             git pull origin main
+            cp -v /home/ubuntu/donut_fcm/donut-test-32a3f-firebase-adminsdk-o8uvl-abdc1a41cd.json /home/ubuntu/Donut-Server/src/main/resources/
             gradle build
             docker rm -f donut_server
             docker build --tag donut_server .
