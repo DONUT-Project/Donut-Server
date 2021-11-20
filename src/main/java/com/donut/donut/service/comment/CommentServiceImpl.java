@@ -157,9 +157,6 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findByCommentId(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
-        friendRepository.findByFriend_KakaoIdAndMe(comment.getDone().getUser().getKakaoId(), user)
-                .orElseThrow(FriendNotFoundException::new);
-
         recommentRepository.save(
                 Recomment.builder()
                         .commentId(comment)
