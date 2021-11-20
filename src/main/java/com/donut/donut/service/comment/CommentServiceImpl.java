@@ -3,6 +3,7 @@ package com.donut.donut.service.comment;
 import com.donut.donut.entity.comment.Comment;
 import com.donut.donut.entity.comment.repository.CommentRepository;
 import com.donut.donut.entity.device_token.DeviceToken;
+import com.donut.donut.entity.device_token.repository.DeviceTokenRepository;
 import com.donut.donut.entity.done.Done;
 import com.donut.donut.entity.done.repository.DoneRepository;
 import com.donut.donut.entity.friend.repository.FriendRepository;
@@ -35,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
     private final FriendRepository friendRepository;
     private final CommentRepository commentRepository;
     private final RecommentRepository recommentRepository;
+    private final DeviceTokenRepository deviceTokenRepository;
 
     private final JwtProvider jwtProvider;
     private final FcmUtil fcmUtil;
@@ -138,7 +140,9 @@ public class CommentServiceImpl implements CommentService {
 
         List<String> tokens = new ArrayList<>();
 
-        for(DeviceToken deviceToken : doner.getDeviceTokens()) {
+        List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUser(doner);
+
+        for(DeviceToken deviceToken : deviceTokens) {
             tokens.add(deviceToken.getDeviceToken());
         }
 
