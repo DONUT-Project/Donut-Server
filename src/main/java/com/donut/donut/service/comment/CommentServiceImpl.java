@@ -59,7 +59,8 @@ public class CommentServiceImpl implements CommentService {
 
         for(Comment comment : comments) {
             List<ReCommentResponse> responses = new ArrayList<>();
-            for(Recomment recomment : comment.getRecomments()) {
+            List<Recomment> recomments = recommentRepository.findAllByCommentId(comment);
+            for(Recomment recomment : recomments) {
                 if(recomment.getIsPublic()) {
                     responses.add(
                             ReCommentResponse.builder()
