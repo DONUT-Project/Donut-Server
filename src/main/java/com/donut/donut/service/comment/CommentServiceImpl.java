@@ -125,7 +125,7 @@ public class CommentServiceImpl implements CommentService {
         Done done = doneRepository.findByDoneId(doneId)
                 .orElseThrow(DoneNotFoundException::new);
 
-        Comment comment = commentRepository.save(
+        commentRepository.save(
                 Comment.builder()
                         .comment(writeCommentRequest.getComment())
                         .user(user)
@@ -135,8 +135,7 @@ public class CommentServiceImpl implements CommentService {
                         .build()
         );
 
-        User doner = userRepository.findByKakaoId(comment.getDone().getUser().getKakaoId())
-                .orElseThrow(UserNotFoundException::new);
+        User doner = done.getUser();
 
         List<String> tokens = new ArrayList<>();
 
@@ -176,12 +175,16 @@ public class CommentServiceImpl implements CommentService {
         User doner = userRepository.findByKakaoId(comment.getDone().getUser().getKakaoId())
                 .orElseThrow(UserNotFoundException::new);
 
+        List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUser(commenter);
+
         List<String> tokens = new ArrayList<>();
-        for(DeviceToken deviceToken : commenter.getDeviceTokens()) {
+        for(DeviceToken deviceToken : deviceTokens) {
             tokens.add(deviceToken.getDeviceToken());
         }
 
-        for(DeviceToken deviceToken : doner.getDeviceTokens()) {
+        deviceTokens = deviceTokenRepository.findAllByUser(doner);
+
+        for(DeviceToken deviceToken : deviceTokens) {
             tokens.add(deviceToken.getDeviceToken());
         }
 
