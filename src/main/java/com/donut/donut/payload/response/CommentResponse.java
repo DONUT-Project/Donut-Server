@@ -13,6 +13,7 @@ public class CommentResponse {
     private Long doneId;
     private Long userId;
     private String nickName;
+    private String profileUrl;
     private String comment;
     private Boolean isPublic;
     private LocalDateTime writeAt;

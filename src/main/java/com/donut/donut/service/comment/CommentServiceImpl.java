@@ -71,6 +71,7 @@ public class CommentServiceImpl implements CommentService {
                                     .nickName(recomment.getUser().getNickName())
                                     .userId(recomment.getUser().getKakaoId())
                                     .writeAt(recomment.getWriteAt())
+                                    .profileUrl(recomment.getUser().getUserImageUrl())
                                     .build()
                     );
                 }else if(recomment.getIsPublic() && recomment.getUser().equals(user)) {
@@ -83,6 +84,7 @@ public class CommentServiceImpl implements CommentService {
                                     .nickName(recomment.getUser().getNickName())
                                     .userId(recomment.getUser().getKakaoId())
                                     .writeAt(recomment.getWriteAt())
+                                    .profileUrl(recomment.getUser().getUserImageUrl())
                                     .build()
                     );
                 }else {
@@ -95,6 +97,7 @@ public class CommentServiceImpl implements CommentService {
                                     .nickName(recomment.getUser().getNickName())
                                     .userId(recomment.getUser().getKakaoId())
                                     .writeAt(recomment.getWriteAt())
+                                    .profileUrl(recomment.getUser().getUserImageUrl())
                                     .build()
                     );
                 }
@@ -111,6 +114,7 @@ public class CommentServiceImpl implements CommentService {
                             .nickName(comment.getUser().getNickName())
                             .userId(comment.getUser().getKakaoId())
                             .writeAt(comment.getWriteAt())
+                            .profileUrl(comment.getUser().getUserImageUrl())
                             .build()
             );
         }
