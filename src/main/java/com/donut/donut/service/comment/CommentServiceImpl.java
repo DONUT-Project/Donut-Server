@@ -243,6 +243,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void deleteReComment(String token, Long reCommentId) {
         User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
                 .orElseThrow(RuntimeException::new);
