@@ -123,8 +123,10 @@ public class CommentServiceImpl implements CommentService {
         Done done = doneRepository.findByDoneId(doneId)
                 .orElseThrow(DoneNotFoundException::new);
 
-        friendRepository.findByFriend_KakaoIdAndMe(done.getUser().getKakaoId(), user)
-                .orElseThrow(FriendNotFoundException::new);
+        if(!done.getUser().equals(user)) {
+            friendRepository.findByFriend_KakaoIdAndMe(done.getUser().getKakaoId(), user)
+                    .orElseThrow(FriendNotFoundException::new);
+        }
 
         Comment comment = commentRepository.save(
                 Comment.builder()
