@@ -13,4 +13,5 @@ public interface RecommentRepository extends JpaRepository<Recomment, Long> {
     Optional<Recomment> findByRecommentId(Long recommentId);
     void deleteByRecommentId(Long recommentId);
     List<Recomment> findAllByCommentId(Comment commentId);
+    void deleteAllByCommentId(Comment commentId);
 }

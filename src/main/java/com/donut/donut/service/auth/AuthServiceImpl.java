@@ -37,6 +37,8 @@ public class AuthServiceImpl implements AuthService{
                     if(!user.getNickName().equals(signInRequest.getNickName()))
                         user.updateNickName(signInRequest.getNickName());
 
+                    userRepository.save(user);
+
                     String accessToken = jwtProvider.generateAccessToken(signInRequest.getKakaoId());
                     String refreshToken = jwtProvider.generateRefreshToken(signInRequest.getKakaoId());
 

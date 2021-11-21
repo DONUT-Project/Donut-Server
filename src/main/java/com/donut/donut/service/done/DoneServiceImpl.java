@@ -1,9 +1,12 @@
 package com.donut.donut.service.done;
 
+import com.donut.donut.entity.comment.Comment;
+import com.donut.donut.entity.comment.repository.CommentRepository;
 import com.donut.donut.entity.done.Done;
 import com.donut.donut.entity.done.repository.DoneRepository;
 import com.donut.donut.entity.friend.Friend;
 import com.donut.donut.entity.friend.repository.FriendRepository;
+import com.donut.donut.entity.recomment.repository.RecommentRepository;
 import com.donut.donut.entity.user.User;
 import com.donut.donut.entity.user.repository.UserRepository;
 import com.donut.donut.error.exceptions.DoneNotFoundException;
@@ -18,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,8 @@ public class DoneServiceImpl implements DoneService {
     private final UserRepository userRepository;
     private final DoneRepository doneRepository;
     private final FriendRepository friendRepository;
+    private final CommentRepository commentRepository;
+    private final RecommentRepository recommentRepository;
 
     private final JwtProvider jwtProvider;
 
@@ -145,6 +149,13 @@ public class DoneServiceImpl implements DoneService {
         Done done = doneRepository.findByDoneIdAndUser(doneId, user)
                 .orElseThrow(DoneNotFoundException::new);
 
+        List<Comment> comments = commentRepository.findByDone(done);
+
+        for (Comment comment : comments) {
+            recommentRepository.deleteAllByCommentId(comment);
+        }
+
+        commentRepository.deleteAllByDone(done);
         doneRepository.deleteByDoneId(done.getDoneId());
     }
 }
