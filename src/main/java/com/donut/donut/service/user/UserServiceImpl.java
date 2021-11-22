@@ -1,7 +1,9 @@
 package com.donut.donut.service.user;
 
+import com.donut.donut.entity.comment.Comment;
 import com.donut.donut.entity.comment.repository.CommentRepository;
 import com.donut.donut.entity.device_token.repository.DeviceTokenRepository;
+import com.donut.donut.entity.done.Done;
 import com.donut.donut.entity.done.repository.DoneRepository;
 import com.donut.donut.entity.friend.repository.FriendRepository;
 import com.donut.donut.entity.recomment.repository.RecommentRepository;
@@ -16,6 +18,8 @@ import com.donut.donut.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -64,6 +68,14 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
                 .orElseThrow(UserNotFoundException::new);
 
+        List<Done> dones = doneRepository.findAllByUser(user);
+        for (Done done : dones) {
+            List<Comment> comments = commentRepository.findByDone(done);
+            for (Comment comment : comments) {
+                recommentRepository.findAllByCommentId(comment);
+            }
+            commentRepository.deleteAllByDone(done);
+        }
 
         recommentRepository.deleteAllByUser(user);
         commentRepository.deleteAllByUser(user);
