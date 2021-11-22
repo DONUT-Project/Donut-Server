@@ -16,4 +16,5 @@ public interface DoneRepository extends JpaRepository<Done, Long> {
     Optional<Done> findByDoneIdAndUser(Long doneId, User user);
     void deleteByDoneId(Long doneId);
     Optional<Done> findByDoneId(Long doneId);
+    void deleteAllByUser(User user);
 }
