@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,4 +30,7 @@ public class Done {
     private Boolean isPublic;
 
     private LocalDate writeAt;
+
+    @OneToMany(mappedBy = "done", cascade = CascadeType.ALL)
+    private List<Done> dones;
 }

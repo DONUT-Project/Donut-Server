@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService{
         for (Done done : dones) {
             List<Comment> comments = commentRepository.findByDone(done);
             for (Comment comment : comments) {
-                recommentRepository.findAllByCommentId(comment);
+                recommentRepository.deleteAllByCommentId(comment);
             }
             commentRepository.deleteAllByDone(done);
         }
