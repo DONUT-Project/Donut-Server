@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService{
         deviceTokenRepository.deleteAllByUser(user);
         refreshTokenRepository.deleteAllByKakaoId(user.getKakaoId());
         friendRepository.deleteAllByFriend(user);
-        friendRepository.findAllByMe(user);
+        friendRepository.deleteAllByMe(user);
         userRepository.deleteByKakaoId(user.getKakaoId());
     }
 }
