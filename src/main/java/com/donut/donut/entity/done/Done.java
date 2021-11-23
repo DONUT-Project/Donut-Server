@@ -30,7 +30,4 @@ public class Done {
     private Boolean isPublic;
 
     private LocalDate writeAt;
-
-    @OneToMany(mappedBy = "done", cascade = CascadeType.ALL)
-    private List<Done> dones;
 }
