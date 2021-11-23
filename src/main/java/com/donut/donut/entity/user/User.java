@@ -52,4 +52,16 @@ public class User {
     public void updateNickName(String nickName) {
         this.nickName = nickName;
     }
+
+    public User updateIsComment(Boolean isComment) {
+        this.isCommentNotification = isComment;
+
+        return this;
+    }
+
+    public User updateIsFriend(Boolean isFriend) {
+        this.isFriendNotification = isFriend;
+
+        return this;
+    }
 }

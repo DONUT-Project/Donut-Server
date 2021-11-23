@@ -177,20 +177,22 @@ public class CommentServiceImpl implements CommentService {
         User doner = userRepository.findByKakaoId(comment.getDone().getUser().getKakaoId())
                 .orElseThrow(UserNotFoundException::new);
 
-        List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUser(commenter);
+        if(doner.getIsCommentNotification()) {
+            List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUser(commenter);
 
-        List<String> tokens = new ArrayList<>();
-        for(DeviceToken deviceToken : deviceTokens) {
-            tokens.add(deviceToken.getDeviceToken());
+            List<String> tokens = new ArrayList<>();
+            for (DeviceToken deviceToken : deviceTokens) {
+                tokens.add(deviceToken.getDeviceToken());
+            }
+
+            deviceTokens = deviceTokenRepository.findAllByUser(doner);
+
+            for (DeviceToken deviceToken : deviceTokens) {
+                tokens.add(deviceToken.getDeviceToken());
+            }
+
+            fcmUtil.sendPushMessage(tokens, "댓글알림!", "Done리스트에 댓글이 왔습니다.");
         }
-
-        deviceTokens = deviceTokenRepository.findAllByUser(doner);
-
-        for(DeviceToken deviceToken : deviceTokens) {
-            tokens.add(deviceToken.getDeviceToken());
-        }
-
-        fcmUtil.sendPushMessage(tokens, "댓글알림!", "Done리스트에 댓글이 왔습니다.");
     }
 
     @Override

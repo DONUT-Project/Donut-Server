@@ -57,12 +57,14 @@ public class FriendServiceImpl implements FriendService{
                         .build()
         );
 
-        List<String> tokens = new ArrayList<>();
-        for(DeviceToken deviceToken : friend.getDeviceTokens()) {
-            tokens.add(deviceToken.getDeviceToken());
-        }
+        if(friend.getIsFriendNotification()) {
+            List<String> tokens = new ArrayList<>();
+            for (DeviceToken deviceToken : friend.getDeviceTokens()) {
+                tokens.add(deviceToken.getDeviceToken());
+            }
 
-        fcmUtil.sendPushMessage(tokens, "친구가 되었습니다", user.getNickName() + "님과 친구가 되었습니다!");
+            fcmUtil.sendPushMessage(tokens, "친구가 되었습니다", user.getNickName() + "님과 친구가 되었습니다!");
+        }
     }
 
     @Override

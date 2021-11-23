@@ -9,4 +9,6 @@ public class UserResponse {
     private Long userId;
     private String name;
     private String profileUrl;
+    private Boolean isNotificationComment;
+    private Boolean isNotificationFriend;
 }

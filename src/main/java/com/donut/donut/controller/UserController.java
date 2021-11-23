@@ -23,9 +23,27 @@ public class UserController {
         return userService.getMyInfo(token);
     }
 
+    @GetMapping("/{kakaoId}")
+    public UserResponse getFriendInfo(@RequestHeader("Authorization") String token,
+                                      @PathVariable Long kakaoId) {
+        return userService.getFriends(token, kakaoId);
+    }
+
     @PostMapping
     public void signUp(@RequestBody SignUpRequest signUpRequest) {
         userService.signUp(signUpRequest);
+    }
+
+    @PutMapping("/comment")
+    public void updateIsComment(@RequestHeader("Authorization") String token,
+                                @RequestParam Boolean isComment) {
+        userService.updateIsNotificationComment(token, isComment);
+    }
+
+    @PutMapping("/friend")
+    public void updateIsFriend(@RequestHeader("Authorization") String token,
+                               @RequestParam Boolean isFriend) {
+        userService.updateIsNotificationFriend(token, isFriend);
     }
 
     @DeleteMapping

@@ -46,6 +46,8 @@ public class UserServiceImpl implements UserService{
                         .kakaoId(signUpRequest.getKakaoId())
                         .userImageUrl(signUpRequest.getProfileUrl())
                         .nickName(signUpRequest.getNickName())
+                        .isCommentNotification(true)
+                        .isFriendNotification(true)
                         .build()
         );
     }
@@ -59,7 +61,42 @@ public class UserServiceImpl implements UserService{
                 .userId(user.getKakaoId())
                 .name(user.getNickName())
                 .profileUrl(user.getUserImageUrl())
+                .isNotificationComment(user.getIsCommentNotification())
+                .isNotificationFriend(user.getIsFriendNotification())
                 .build();
+    }
+
+    @Override
+    public UserResponse getFriends(String token, Long kakaoId) {
+        userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
+                .orElseThrow(UserNotFoundException::new);
+
+        User user = userRepository.findByKakaoId(kakaoId)
+                .orElseThrow(UserNotFoundException::new);
+
+        return UserResponse.builder()
+                .userId(user.getKakaoId())
+                .name(user.getNickName())
+                .profileUrl(user.getUserImageUrl())
+                .isNotificationComment(user.getIsCommentNotification())
+                .isNotificationFriend(user.getIsFriendNotification())
+                .build();
+    }
+
+    @Override
+    public void updateIsNotificationComment(String token, Boolean isNotificationComment) {
+        User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
+                .orElseThrow(UserNotFoundException::new);
+
+        userRepository.save(user.updateIsComment(isNotificationComment));
+    }
+
+    @Override
+    public void updateIsNotificationFriend(String token, Boolean isNotificationFriend) {
+        User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
+                .orElseThrow(UserNotFoundException::new);
+
+        userRepository.save(user.updateIsFriend(isNotificationFriend));
     }
 
     @Override
