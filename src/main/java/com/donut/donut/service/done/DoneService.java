@@ -11,7 +11,7 @@ import java.util.List;
 public interface DoneService {
     List<DoneResponse> readDone(String token);
     List<DoneResponse> searchDoneByWriteAt(String token, LocalDate writeAt);
-    List<DoneResponse> readFriendDone(String token, Long friendId);
+    List<DoneResponse> readFriendDone(String token, Long friendId, LocalDate date);
     void writeDone(String token, WriteDoneRequest writeDoneRequest);
     void updateDone(String token, Long doneId, UpdateDoneRequest updateDoneRequest);
     void updatePublic(String token, Long doneId, Boolean isPublic);

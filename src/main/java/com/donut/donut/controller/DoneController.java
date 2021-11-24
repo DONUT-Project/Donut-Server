@@ -25,8 +25,9 @@ public class DoneController {
 
     @GetMapping("/friend/{friendId}")
     public List<DoneResponse> getFriendDone(@RequestHeader("Authorization") String token,
-                                            @PathVariable Long friendId) {
-        return doneService.readFriendDone(token, friendId);
+                                            @PathVariable Long friendId,
+                                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate writeAt) {
+        return doneService.readFriendDone(token, friendId, writeAt);
     }
 
     @GetMapping("/search")

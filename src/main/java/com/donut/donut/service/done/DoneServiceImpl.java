@@ -84,14 +84,14 @@ public class DoneServiceImpl implements DoneService {
     }
 
     @Override
-    public List<DoneResponse> readFriendDone(String token, Long friendId) {
+    public List<DoneResponse> readFriendDone(String token, Long friendId, LocalDate date) {
         User user = userRepository.findByKakaoId(jwtProvider.getKakaoId(token))
                 .orElseThrow(UserNotFoundException::new);
 
         Friend friend = friendRepository.findByFriend_KakaoIdAndMe(friendId, user)
                 .orElseThrow(FriendNotFoundException::new);
 
-        List<Done> dones = doneRepository.findAllByUser(friend.getFriend());
+        List<Done> dones = doneRepository.findAllByUserAndWriteAt(friend.getFriend(), date);
 
         return setResponse(dones);
     }
