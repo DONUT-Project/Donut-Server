@@ -79,7 +79,7 @@ public class FriendServiceImpl implements FriendService{
         friendRepository.findByFriend_KakaoIdAndMe(friendId, user)
                 .orElseThrow(FriendNotFoundException::new);
 
-        friendRepository.deleteByFriendAndMe(friend, user);
+        friendRepository.deleteAllByMeAndFriendOrFriendAndMe(user, friend, user, friend);
     }
 
     @Override
