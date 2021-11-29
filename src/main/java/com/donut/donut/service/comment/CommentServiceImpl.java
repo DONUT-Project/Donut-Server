@@ -241,6 +241,7 @@ public class CommentServiceImpl implements CommentService {
         if(!comment.getUser().equals(user) || !comment.getDone().getUser().equals(user))
             throw new NotMyCommentException();
 
+        recommentRepository.deleteAllByCommentId(comment);
         commentRepository.deleteByCommentId(commentId);
     }
 
