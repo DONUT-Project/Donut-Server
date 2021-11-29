@@ -203,9 +203,6 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findByCommentId(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
-        if(!comment.getUser().equals(user))
-            throw new NotMyCommentException();
-
         setIfNotNull(comment::setComment, updateCommentRequest.getComment());
         setIfNotNull(comment::setIsPublic, updateCommentRequest.getIsPublic());
 
@@ -219,9 +216,6 @@ public class CommentServiceImpl implements CommentService {
 
         Recomment recomment = recommentRepository.findByRecommentId(recommentId)
                 .orElseThrow(ReCommentNotFoundException::new);
-
-        if(!recomment.getUser().equals(user))
-            throw new NotMyCommentException();
 
         setIfNotNull(recomment::setComment, updateCommentRequest.getComment());
         setIfNotNull(recomment::setIsPublic, updateCommentRequest.getIsPublic());
