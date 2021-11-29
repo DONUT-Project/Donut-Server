@@ -238,9 +238,6 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findByCommentId(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
-        if(!comment.getUser().equals(user) || !comment.getDone().getUser().equals(user))
-            throw new NotMyCommentException();
-
         recommentRepository.deleteAllByCommentId(comment);
         commentRepository.deleteByCommentId(commentId);
     }
@@ -253,9 +250,6 @@ public class CommentServiceImpl implements CommentService {
 
         Recomment recomment = recommentRepository.findByRecommentId(reCommentId)
                 .orElseThrow(RuntimeException::new);
-
-        if(!recomment.getUser().equals(user) || recomment.getCommentId().getDone().getUser().equals(user))
-            throw new RuntimeException("not have authority");
 
         recommentRepository.deleteByRecommentId(reCommentId);
     }
