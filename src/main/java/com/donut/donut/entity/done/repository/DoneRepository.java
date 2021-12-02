@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface DoneRepository extends JpaRepository<Done, Long> {
     List<Done> findAllByUser(User user);
     List<Done> findAllByUserAndWriteAt(User user, LocalDate writeAt);
+    List<Done> findAllByUserAndWriteAtAndIsPublic(User user, LocalDate writeAt, Boolean isPublic);
     Optional<Done> findByDoneIdAndUser(Long doneId, User user);
     void deleteByDoneId(Long doneId);
     Optional<Done> findByDoneId(Long doneId);

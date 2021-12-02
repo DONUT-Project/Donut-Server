@@ -91,7 +91,7 @@ public class DoneServiceImpl implements DoneService {
         Friend friend = friendRepository.findByFriend_KakaoIdAndMe(friendId, user)
                 .orElseThrow(FriendNotFoundException::new);
 
-        List<Done> dones = doneRepository.findAllByUserAndWriteAt(friend.getFriend(), date);
+        List<Done> dones = doneRepository.findAllByUserAndWriteAtAndIsPublic(friend.getFriend(), date, true);
 
         return setResponse(dones);
     }
