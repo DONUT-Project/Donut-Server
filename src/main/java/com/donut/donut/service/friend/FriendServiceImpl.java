@@ -114,6 +114,8 @@ public class FriendServiceImpl implements FriendService{
                             .profileUrl(friend.getFriend().getUserImageUrl())
                             .name(friend.getFriend().getNickName())
                             .userId(friend.getFriend().getKakaoId())
+                            .isNotificationFriend(friend.getFriend().getIsFriendNotification())
+                            .isNotificationComment(friend.getFriend().getIsCommentNotification())
                             .build()
             );
         }
